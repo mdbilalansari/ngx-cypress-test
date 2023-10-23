@@ -28,17 +28,17 @@ describe("first test suite", () => {
     cy.get('[class="input-full-width size-medium shape-rectangle"]');
 
     //By two attributes
-    cy.get('[placeholder="Email"] [fullwidth]');
+    cy.get('[placeholder="Email"][fullwidth]');
 
     //By tag, attribute, id and class
-    cy.get('input [placeholder="Email"] #inputEmail1  .input-full-width');
+    cy.get('input[placeholder="Email"]#inputEmail1.input-full-width');
 
     //By cypress test ID
     //Most recommended way
     cy.get('[data-cy="imputEmail1"]');
   });
 
-  it.only("second-test", () => {
+  it("second-test", () => {
     //only is used to run this test only
     //Navigating to url
     cy.visit("/");
@@ -64,5 +64,43 @@ describe("first test suite", () => {
       .parents("form")
       .find("nb-checkbox")
       .click();
+  });
+
+  it.only("third-test", () => {
+    cy.visit("/");
+    cy.contains("Forms").click();
+    cy.contains("Form Layouts").click();
+
+    //Repeating Code
+    cy.contains("nb-card", "Using the Grid")
+      .find('[for="inputEmail1"]')
+      .should("contain", "Email");
+    cy.contains("nb-card", "Using the Grid")
+      .find('[for="inputPassword2"]')
+      .should("contain", "Password");
+
+    // THIS WOULD NOT WORK
+    // const usingTheGrid = cy.contains("nb-card", "Using the Grid");
+    // usingTheGrid.find('[for="inputEmail1"]').should("contain", "Email");
+    // usingTheGrid.find('[for="inputPassword2"]').should("contain", "Password");
+
+    // 1) Cypress Alias
+    cy.contains("nb-card", "Using the Grid").as("usingTheGrid");
+    cy.get("@usingTheGrid")
+      .find('[for="inputEmail1"]')
+      .should("contain", "Email");
+    cy.get("@usingTheGrid")
+      .find('[for="inputPassword2"]')
+      .should("contain", "Password");
+
+    // 2) Cypress then() method
+    cy.contains("nb-card", "Using the Grid").then((usingTheGridForm) => {
+      cy.wrap(usingTheGridForm)
+        .find('[for="inputEmail1"]')
+        .should("contain", "Email");
+      cy.wrap(usingTheGridForm)
+        .find('[for="inputPassword2"]')
+        .should("contain", "Password");
+    });
   });
 });
