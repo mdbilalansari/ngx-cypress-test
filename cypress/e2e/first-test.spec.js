@@ -1,35 +1,39 @@
 /// <reference types="cypress"/>
 
 describe("first test suite", () => {
-  describe("nested test suite", () => {
-    beforeEach("login", () => {
-      //This code will run before each 'it' test
-    });
-
-    it("first-test", () => {
-      //test code
-    });
-
-    it("second-test", () => {
-      //test code
-    });
-  });
-
   it("first-test", () => {
-    //test code
-  });
+    //Navigating to url
+    cy.visit("/");
+    cy.contains("Forms").click();
+    cy.contains("Form Layouts").click();
+    ////////// TYPE OF LOCATORS ///////////////////
 
-  it("second-test", () => {
-    //test code
-  });
-});
+    //By Tag Name
+    cy.get("input");
 
-describe("Second test suite", () => {
-  it("first-test", () => {
-    //test code
-  });
+    //By ID
+    cy.get("#inputEmail1");
 
-  it("second-test", () => {
-    //test code
+    //By Class
+    cy.get(".input-full-width");
+
+    //By Attribute name
+    cy.get("[fullwidth]");
+
+    //By Attribute and Value
+    cy.get('[placeholder="Email"]');
+
+    //By Entire Class value
+    cy.get('[class="input-full-width size-medium shape-rectangle"]');
+
+    //By two attributes
+    cy.get('[placeholder="Email"][fullwidth]');
+
+    //By tag, attribute, id and class
+    cy.get('input[placeholder="Email"]#inputEmail1.input-full-width');
+
+    //By cypress test ID
+    //Most recommended way
+    cy.get('[data-cy="imputEmail1"]');
   });
 });
