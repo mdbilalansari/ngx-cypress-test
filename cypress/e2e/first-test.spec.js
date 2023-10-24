@@ -66,7 +66,7 @@ describe("first test suite", () => {
       .click();
   });
 
-  it.only("third-test", () => {
+  it("third-test", () => {
     cy.visit("/");
     cy.contains("Forms").click();
     cy.contains("Form Layouts").click();
@@ -102,5 +102,48 @@ describe("first test suite", () => {
         .find('[for="inputPassword2"]')
         .should("contain", "Password");
     });
+  });
+
+  it.only("Extract text value", () => {
+    cy.visit("/");
+    cy.contains("Forms").click();
+    cy.contains("Form Layouts").click();
+
+    // 1)
+    cy.get('[for="exampleInputEmail1"]').should("contain", "Email address");
+
+    // 2)
+    cy.get('[for="exampleInputEmail1"]').then((label) => {
+      const labelText = label.text();
+      expect(labelText).to.equal("Email address");
+      cy.wrap(labelText).should("contain", "Email address");
+    });
+
+    // 3)
+    cy.get('[for="exampleInputEmail1"]')
+      .invoke("text")
+      .then((text) => {
+        expect(text).to.equal("Email address");
+      });
+    cy.get('[for="exampleInputEmail1"]')
+      .invoke("text")
+      .as("labelText")
+      .should("contain", "Email address");
+
+    // 4)
+    cy.get('[for="exampleInputEmail1"]')
+      .invoke("attr", "class")
+      .then((classValue) => {
+        expect(classValue).to.equal("label");
+      });
+
+    // 5) Invoke Property
+    cy.get("#exampleInputEmail1").type("mdbilalansari@gmail.com");
+    cy.get("#exampleInputEmail1")
+      .invoke("prop", "value")
+      .should("contain", "mdbilalansari@gmail.com")
+      .then((propValue) => {
+        expect(propValue).to.equal("mdbilalansari@gmail.com");
+      });
   });
 });
