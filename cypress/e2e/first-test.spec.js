@@ -1,25 +1,25 @@
 /// <reference types="cypress"/>
 
-describe("first test suite", () => {
-  it("first-test", () => {
+describe('first test suite', () => {
+  it('first-test', () => {
     //Navigating to url
-    cy.visit("/");
-    cy.contains("Forms").click();
-    cy.contains("Form Layouts").click();
+    cy.visit('/');
+    cy.contains('Forms').click();
+    cy.contains('Form Layouts').click();
 
     ////////// TYPE OF LOCATORS ///////////////////
 
     //By Tag Name
-    cy.get("input");
+    cy.get('input');
 
     //By ID
-    cy.get("#inputEmail1");
+    cy.get('#inputEmail1');
 
     //By Class
-    cy.get(".input-full-width");
+    cy.get('.input-full-width');
 
     //By Attribute name
-    cy.get("[fullwidth]");
+    cy.get('[fullwidth]');
 
     //By Attribute and Value
     cy.get('[placeholder="Email"]');
@@ -38,46 +38,42 @@ describe("first test suite", () => {
     cy.get('[data-cy="imputEmail1"]');
   });
 
-  it("second-test", () => {
+  it('second-test', () => {
     //only is used to run this test only
     //Navigating to url
-    cy.visit("/");
-    cy.contains("Forms").click();
-    cy.contains("Form Layouts").click();
+    cy.visit('/');
+    cy.contains('Forms').click();
+    cy.contains('Form Layouts').click();
 
     //Theory
     // get() - find element on the page by locator globally
     // find() - find child element by locator
     // contains - find HTML text by locator and text
 
-    cy.contains("Sign in");
-    cy.contains('[status="warning"]', "Sign in");
-    cy.contains("nb-card", "Horizontal form").find("button");
-    cy.contains("nb-card", "Horizontal form").contains("Sign in");
-    cy.contains("nb-card", "Horizontal form").get("button");
+    cy.contains('Sign in');
+    cy.contains('[status="warning"]', 'Sign in');
+    cy.contains('nb-card', 'Horizontal form').find('button');
+    cy.contains('nb-card', 'Horizontal form').contains('Sign in');
+    cy.contains('nb-card', 'Horizontal form').get('button');
 
     //Cypress chains and DOM
-    cy.get("#inputEmail3")
-      .parents("form")
-      .find("button")
-      .should("contain", "Sign in")
-      .parents("form")
-      .find("nb-checkbox")
+    cy.get('#inputEmail3')
+      .parents('form')
+      .find('button')
+      .should('contain', 'Sign in')
+      .parents('form')
+      .find('nb-checkbox')
       .click();
   });
 
-  it("third-test", () => {
-    cy.visit("/");
-    cy.contains("Forms").click();
-    cy.contains("Form Layouts").click();
+  it('third-test', () => {
+    cy.visit('/');
+    cy.contains('Forms').click();
+    cy.contains('Form Layouts').click();
 
     //Repeating Code
-    cy.contains("nb-card", "Using the Grid")
-      .find('[for="inputEmail1"]')
-      .should("contain", "Email");
-    cy.contains("nb-card", "Using the Grid")
-      .find('[for="inputPassword2"]')
-      .should("contain", "Password");
+    cy.contains('nb-card', 'Using the Grid').find('[for="inputEmail1"]').should('contain', 'Email');
+    cy.contains('nb-card', 'Using the Grid').find('[for="inputPassword2"]').should('contain', 'Password');
 
     // THIS WOULD NOT WORK
     // const usingTheGrid = cy.contains("nb-card", "Using the Grid");
@@ -85,65 +81,85 @@ describe("first test suite", () => {
     // usingTheGrid.find('[for="inputPassword2"]').should("contain", "Password");
 
     // 1) Cypress Alias
-    cy.contains("nb-card", "Using the Grid").as("usingTheGrid");
-    cy.get("@usingTheGrid")
-      .find('[for="inputEmail1"]')
-      .should("contain", "Email");
-    cy.get("@usingTheGrid")
-      .find('[for="inputPassword2"]')
-      .should("contain", "Password");
+    cy.contains('nb-card', 'Using the Grid').as('usingTheGrid');
+    cy.get('@usingTheGrid').find('[for="inputEmail1"]').should('contain', 'Email');
+    cy.get('@usingTheGrid').find('[for="inputPassword2"]').should('contain', 'Password');
 
     // 2) Cypress then() method
-    cy.contains("nb-card", "Using the Grid").then((usingTheGridForm) => {
-      cy.wrap(usingTheGridForm)
-        .find('[for="inputEmail1"]')
-        .should("contain", "Email");
-      cy.wrap(usingTheGridForm)
-        .find('[for="inputPassword2"]')
-        .should("contain", "Password");
+    cy.contains('nb-card', 'Using the Grid').then((usingTheGridForm) => {
+      cy.wrap(usingTheGridForm).find('[for="inputEmail1"]').should('contain', 'Email');
+      cy.wrap(usingTheGridForm).find('[for="inputPassword2"]').should('contain', 'Password');
     });
   });
 
-  it.only("Extract text value", () => {
-    cy.visit("/");
-    cy.contains("Forms").click();
-    cy.contains("Form Layouts").click();
+  it('Extract text value', () => {
+    cy.visit('/');
+    cy.contains('Forms').click();
+    cy.contains('Form Layouts').click();
 
     // 1)
-    cy.get('[for="exampleInputEmail1"]').should("contain", "Email address");
+    cy.get('[for="exampleInputEmail1"]').should('contain', 'Email address');
 
     // 2)
     cy.get('[for="exampleInputEmail1"]').then((label) => {
       const labelText = label.text();
-      expect(labelText).to.equal("Email address");
-      cy.wrap(labelText).should("contain", "Email address");
+      expect(labelText).to.equal('Email address');
+      cy.wrap(labelText).should('contain', 'Email address');
     });
 
     // 3)
     cy.get('[for="exampleInputEmail1"]')
-      .invoke("text")
+      .invoke('text')
       .then((text) => {
-        expect(text).to.equal("Email address");
+        expect(text).to.equal('Email address');
       });
-    cy.get('[for="exampleInputEmail1"]')
-      .invoke("text")
-      .as("labelText")
-      .should("contain", "Email address");
+    cy.get('[for="exampleInputEmail1"]').invoke('text').as('labelText').should('contain', 'Email address');
 
     // 4)
     cy.get('[for="exampleInputEmail1"]')
-      .invoke("attr", "class")
+      .invoke('attr', 'class')
       .then((classValue) => {
-        expect(classValue).to.equal("label");
+        expect(classValue).to.equal('label');
       });
 
     // 5) Invoke Property
-    cy.get("#exampleInputEmail1").type("mdbilalansari@gmail.com");
-    cy.get("#exampleInputEmail1")
-      .invoke("prop", "value")
-      .should("contain", "mdbilalansari@gmail.com")
+    cy.get('#exampleInputEmail1').type('mdbilalansari@gmail.com');
+    cy.get('#exampleInputEmail1')
+      .invoke('prop', 'value')
+      .should('contain', 'mdbilalansari@gmail.com')
       .then((propValue) => {
-        expect(propValue).to.equal("mdbilalansari@gmail.com");
+        expect(propValue).to.equal('mdbilalansari@gmail.com');
       });
+  });
+
+  it('radio buttons', () => {
+    cy.visit('/');
+    cy.contains('Forms').click();
+    cy.contains('Form Layouts').click();
+
+    cy.contains('nb-card', 'Using the Grid')
+      .find("[type='radio']")
+      .then((radioButtons) => {
+        cy.wrap(radioButtons).eq(0).check({ force: true }).should('be.checked'); // force: true is used if the elemnt has visually-hidden class
+        cy.wrap(radioButtons).eq(1).check({ force: true });
+        cy.wrap(radioButtons).eq(0).should('not.be.checked');
+        cy.wrap(radioButtons).eq(2).should('be.disabled');
+      });
+  });
+
+  it.only('checkbox', () => {
+    cy.visit('/');
+    cy.contains('Modal & Overlays').click();
+    cy.contains('Toastr').click();
+
+    // Check all the boxes whether they are already checked or not
+    cy.get('[type="checkbox"]').check({ force: true });
+
+    // Uncheck all the boxes whether they are already checked or not
+    cy.get('[type="checkbox"]').uncheck({ force: true });
+
+    // click on the box, will get checked if it is uncheck and vice-versa
+    cy.get('[type="checkbox"]').click({ multiple: true, force: true }); // mutiple: true is used to click on more than one item
+    cy.get('[type="checkbox"]').eq(1).click({ force: true });
   });
 });
