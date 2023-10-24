@@ -165,7 +165,7 @@ describe('first test suite', () => {
     cy.get('[type="checkbox"]').eq(1).click({ force: true });
   });
 
-  it.only('Date Picker', () => {
+  it('Date Picker', () => {
     function selectDayFromCurrent(day) {
       let date = new Date();
       date.setDate(date.getDate() + day);
@@ -199,5 +199,26 @@ describe('first test suite', () => {
         cy.wrap(input).invoke('prop', 'value').should('contain', dateToAssert);
         cy.wrap(input).should('have.value', dateToAssert);
       });
+  });
+
+  it.only('List and Dropdown', () => {
+    cy.visit('/');
+
+    // 1)
+    cy.get('nav nb-select').click();
+    cy.get('.options-list').contains('Dark').click();
+    cy.get('nav nb-select').should('contain', 'Dark');
+
+    // 2)
+    cy.get('nav nb-select').then((dropDown) => {
+      cy.wrap(dropDown).click();
+      cy.get('.options-list nb-option').each((listItem) => {
+        const itemText = listItem.text().trim();
+        cy.wrap(listItem).click();
+        cy.get('nav nb-select').should('contain', itemText);
+        cy.wrap(dropDown).click();
+      });
+      cy.wrap(dropDown).click();
+    });
   });
 });
