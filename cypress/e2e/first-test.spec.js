@@ -147,7 +147,7 @@ describe('first test suite', () => {
       });
   });
 
-  it.only('checkbox', () => {
+  it('checkbox', () => {
     cy.visit('/');
     cy.contains('Modal & Overlays').click();
     cy.contains('Toastr').click();
@@ -161,5 +161,27 @@ describe('first test suite', () => {
     // click on the box, will get checked if it is uncheck and vice-versa
     cy.get('[type="checkbox"]').click({ multiple: true, force: true }); // mutiple: true is used to click on more than one item
     cy.get('[type="checkbox"]').eq(1).click({ force: true });
+  });
+
+  it.only('Date Picker', () => {
+    cy.visit('/');
+    cy.contains('Forms').click();
+    cy.contains('Datepicker').click();
+
+    let date = new Date();
+    date.setDate(date.getDate() + 1);
+    let futureDay = date.getDate();
+    let futureMonth = date.toLocaleDateString('en-US', { month: 'short' });
+    let futureYear = date.getFullYear();
+    let dateToAssert = `${futureMonth} ${futureDay}, ${futureYear}`;
+
+    cy.contains('nb-card', 'Common Datepicker')
+      .find('input')
+      .then((input) => {
+        cy.wrap(input).click();
+        cy.get('.day-cell').not('.bounding-month').contains(futureDay).click();
+        cy.wrap(input).invoke('prop', 'value').should('contain', dateToAssert);
+        cy.wrap(input).should('have.value', dateToAssert);
+      });
   });
 });
